@@ -1,7 +1,8 @@
 // 1. Vue파일 import
 // 2. 등록하고 사용
 v-if="isModalViewed" @close-modal="isModalViewed = false"
-
+// props는 read-only임 받아온거 수정하면 큰일남
+// 부모컴포넌트에서 쓰는 데이터면 부모컴포넌트에 만들어주는게 좋다
 
 <template>
    <!-- 모달창 -->
@@ -21,6 +22,7 @@ v-if="isModalViewed" @close-modal="isModalViewed = false"
 <script>
 export default{
     name : 'Modal',
+    // 데이터를 받아왔다라는 문법이 props
     props : {
         rooms : Array,
         roomid : Number,

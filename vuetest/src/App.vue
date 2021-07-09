@@ -14,21 +14,25 @@
         <img alt="Vue logo" style="width: 50%;" src="./assets/mojjilogo.jpg" />
     </div>
 
-     
-     <div v-for="(roomslist,i) in rooms" :key="i" >
+
+    
+     <Card v-for="(roomslist,i) in rooms" :key="i" :roomid="i" :room="rooms[i]" @open="modalOpen" />
+ 
+     <!-- <div v-for="(roomslist,i) in rooms" :key="i" >
         <img :src="rooms[i].image" class="room-img" />
         <h4 @click="modalstatus = true; roomid = i ">{{ rooms[i].title }}</h4>
         <p>{{ rooms[i].price }} 원</p>    
-     </div>
+     </div>  -->
 
 
 </template>
 
 <script>
     
-    import { data } from './assets/oneroom.js'
-    import Discount from './components/Discount.vue'
-    import Modal from './components/Modal.vue'
+    import { data } from './assets/oneroom.js';
+    import Discount from './components/Discount.vue';
+    import Modal from './components/Modal.vue';
+    import Card from './components/Card.vue';
     
     export default {
         name: 'App',
@@ -56,12 +60,17 @@
             },
             handlePointStorageClose(close){
                 this.modalstatus = close;
+            },
+            modalOpen(modalstatus, roomid){
+                this.modalstatus = modalstatus;
+                this.roomid = roomid;
             }
         },
         components: {
             // 컴포넌트 등록하기
             Discount : Discount,
             Modal : Modal,
+            Card : Card,
         },
     };
 </script>
