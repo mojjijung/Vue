@@ -1,8 +1,19 @@
 <template>
  
     <!-- 데이터를 전송해주고, 등록하고 사용한다. props : 자식에게 데이터 보내는 방법 -->
-    <Modal :rooms="rooms" :roomid="roomid" :modalstatus="modalstatus" @close="handlePointStorageClose"/>
+    <!-- <Modal :rooms="rooms" :roomid="roomid" :modalstatus="modalstatus" @close="handlePointStorageClose"/> -->
 
+
+    <!-- 조건부로 class명을 넣으려면 { 클래스명: 조건 } -->
+    <!-- <div class="start" :class="{end : modalstatus}">
+        <Modal :rooms="rooms" :roomid="roomid" :modalstatus="modalstatus" @closeModal="modalstatus=false"/>    
+    </div> -->
+
+    <!-- 더 쉽게 애니메이션 넣는 방법 transisition -->
+    <transition name="fade">
+        <Modal :rooms="rooms" :roomid="roomid" :modalstatus="modalstatus" @closeModal="modalstatus=false"/> 
+    </transition>
+    
     <div class="menu">
         <a v-for="(menu,i) in menulist" :key="i">{{ menu }}</a>
     </div>
@@ -15,14 +26,16 @@
     </div>
 
 
-    
-     <Card v-for="(roomslist,i) in rooms" :key="i" :roomid="i" :room="rooms[i]" @open="modalOpen" />
- 
-     <!-- <div v-for="(roomslist,i) in rooms" :key="i" >
+    <!-- 내가 한 방법 -->
+    <!-- <Card v-for="(roomslist,i) in rooms" :key="i" :roomid="i" :room="rooms[i]" @open="openModal" /> -->
+    <!-- 강사가 한 방법 -->
+    <Card @open="modalstatus = true; roomid = i" v-for="(roomslist,i) in rooms" :key="i" :room="rooms[i]" />
+
+    <!-- <div v-for="(roomslist,i) in rooms" :key="i" >
         <img :src="rooms[i].image" class="room-img" />
         <h4 @click="modalstatus = true; roomid = i ">{{ rooms[i].title }}</h4>
         <p>{{ rooms[i].price }} 원</p>    
-     </div>  -->
+    </div>  -->
 
 
 </template>
@@ -61,7 +74,7 @@
             handlePointStorageClose(close){
                 this.modalstatus = close;
             },
-            modalOpen(modalstatus, roomid){
+            openModal(modalstatus, roomid){
                 this.modalstatus = modalstatus;
                 this.roomid = roomid;
             }
@@ -108,14 +121,57 @@
         box-sizing: border-box;
     }
     .black-bg{
-        width: 100%; height: 100%;
-        background: rgba(0,0,0,0,5);
-        position: fixed; padding: 20px
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: block;
+        height: 100%;
+        width: 100%;
+       
+        padding : 20px;
+        z-index: 100;
+       background-color: rgba(0, 0, 0, 0.5);
+          border-radius: 2px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+          transition: all 0.3s ease;
     }
     .white-bg{
         width: 100%; background: white;
         border-radius: 8px;
         padding: 20px;
+    }
+    .start{
+        opacity: 0; 
+        transition: all 1s;
+    }
+    .end{
+        opacity: 1;
+    }
+    
+    .fade-enter-from{
+         opacity: 0;        
+        transform : translateY(-1000px);
+        /* 시작할때 동작구문 */
+    }
+    .fade-enter-active{
+         transition: all 1s;
+    }
+    .fade-enter-to{
+         opacity: 1;
+        transform : translateY(0px);
+         /* 끝날때 동작구문 */
+    }
+        
+    .fade-leave-from{
+         opacity: 1;        
+        /* 시작할때 동작구문 */
+    }
+    .fade-leave-active{
+         transition: all 1s;
+    }
+    .fade-leave-to{
+         opacity: 0;
+         /* 끝날때 동작구문 */
     }
     
 
